@@ -107,8 +107,8 @@ Parses a GitHub Actions workflow YAML file, validates it against the workflow sc
 
 | Parameter | Type | Description |
 |-----------|------|-------------|
-| `file` | `File` | The workflow file (name + content string) |
-| `context_or_trace` | `TraceWriter \| TemplateContext` | A trace writer (for simple use) or an existing `TemplateContext` (for advanced use) |
+| `file` | `str or File` | Path to the workflow file or a File dataclass with name and content workflow file (name + content string) |
+| `context_or_trace` | `TraceWriter \| TemplateContext` | Optional trace writer (for simple use) or an existing `TemplateContext` (for advanced use). Can be omitted |
 
 #### `parse_action(file, context_or_trace) -> TemplateParseResult`
 
