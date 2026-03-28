@@ -4,9 +4,9 @@ Each task builds on the previous ones. Validation criteria are included so progr
 
 ---
 
-## Milestone 1: Parse a minimal workflow
+## Milestone 1: Parse a minimal workflow ✅
 
-### Task 1: Template constants and token primitives
+### Task 1: Template constants and token primitives ✅
 
 Implement the foundational types that everything else depends on.
 
@@ -21,7 +21,7 @@ Implement the foundational types that everything else depends on.
 
 ---
 
-### Task 2: Token hierarchy — base classes and literal tokens
+### Task 2: Token hierarchy — base classes and literal tokens ✅
 
 Implement the `TemplateToken` base class, scalar tokens, and the key-value pair wrapper. Note: tokens reference `DefinitionInfo` from the schema module — use a forward reference or `TYPE_CHECKING` import for now and wire it up in Task 4.
 
@@ -41,7 +41,7 @@ Implement the `TemplateToken` base class, scalar tokens, and the key-value pair 
 
 ---
 
-### Task 3: Token hierarchy — composite and expression tokens
+### Task 3: Token hierarchy — composite and expression tokens ✅
 
 Implement container tokens and expression tokens.
 
@@ -60,7 +60,7 @@ Implement container tokens and expression tokens.
 
 ---
 
-### Task 4: Schema definition hierarchy
+### Task 4: Schema definition hierarchy ✅
 
 Implement the schema definition system used to drive validation.
 
@@ -85,7 +85,7 @@ Implement the schema definition system used to drive validation.
 
 ---
 
-### Task 5: Schema loader (`TemplateSchema`)
+### Task 5: Schema loader (`TemplateSchema`) ✅
 
 Implement the schema loader that reads the JSON schema files and builds a registry of definitions.
 
@@ -102,7 +102,7 @@ Implement the schema loader that reads the JSON schema files and builds a regist
 
 ---
 
-### Task 6: Parse events + object reader protocol
+### Task 6: Parse events + object reader protocol ✅
 
 Implement the event stream abstraction that sits between YAML parsing and the template reader.
 
@@ -117,7 +117,7 @@ Implement the event stream abstraction that sits between YAML parsing and the te
 
 ---
 
-### Task 7: YAML object reader
+### Task 7: YAML object reader ✅
 
 Implement the YAML→ParseEvent bridge using `ruamel.yaml`.
 
@@ -134,7 +134,7 @@ Implement the YAML→ParseEvent bridge using `ruamel.yaml`.
 
 ---
 
-### Task 8: JSON object reader
+### Task 8: JSON object reader ✅
 
 Implement the JSON→ParseEvent reader (used internally by the schema loader to bootstrap parsing).
 
@@ -147,7 +147,7 @@ Implement the JSON→ParseEvent reader (used internally by the schema loader to 
 
 ---
 
-### Task 9: Template context, errors, and trace writer
+### Task 9: Template context, errors, and trace writer ✅
 
 Implement the parsing state holder and error accumulator.
 
@@ -164,7 +164,7 @@ Implement the parsing state holder and error accumulator.
 
 ---
 
-### Task 10: Template reader (core validator)
+### Task 10: Template reader (core validator) ✅
 
 Implement the schema-driven validation engine — the largest single module.
 
@@ -186,7 +186,7 @@ Implement the schema-driven validation engine — the largest single module.
 
 ---
 
-### Task 11: Workflow parser entry point
+### Task 11: Workflow parser entry point ✅
 
 Wire together YAML parsing, schema loading, and template reading into the `parse_workflow()` function.
 
@@ -213,9 +213,9 @@ assert result.context.errors.count == 0
 
 ---
 
-## Milestone 2: Expression validation works
+## Milestone 2: Expression validation works ✅
 
-### Task 12: Expression validation in template reader
+### Task 12: Expression validation in template reader ✅
 
 Ensure `${{ ... }}` expressions embedded in YAML values are validated against allowed context using `py-actions-expressions-parser`.
 
@@ -242,9 +242,9 @@ assert result2.context.errors.count >= 1
 
 ---
 
-## Milestone 3: Full conversion pipeline
+## Milestone 3: Full conversion pipeline ✅
 
-### Task 13: Workflow data model
+### Task 13: Workflow data model ✅
 
 Implement the typed data model dataclasses that conversion produces.
 
@@ -265,7 +265,7 @@ Implement the typed data model dataclasses that conversion produces.
 
 ---
 
-### Task 14: File reference parsing
+### Task 14: File reference parsing ✅
 
 Implement the utility for parsing reusable workflow references.
 
@@ -279,7 +279,7 @@ Implement the utility for parsing reusable workflow references.
 
 ---
 
-### Task 15: Converter utilities
+### Task 15: Converter utilities ✅
 
 Implement the small shared converter helpers that the main converters depend on.
 
@@ -298,7 +298,7 @@ Implement the small shared converter helpers that the main converters depend on.
 
 ---
 
-### Task 16: If-condition converter (AST walking)
+### Task 16: If-condition converter (AST walking) ✅
 
 Implement the converter that wraps `if` conditions with `success() &&` when no status function is present. This walks the `py_actions_expressions_parser` AST.
 
@@ -311,7 +311,7 @@ Implement the converter that wraps `if` conditions with `success() &&` when no s
 
 ---
 
-### Task 17: Event, job, and step converters
+### Task 17: Event, job, and step converters ✅
 
 Implement the main converters that transform the token tree into the data model.
 
@@ -333,7 +333,7 @@ Implement the main converters that transform the token tree into the data model.
 
 ---
 
-### Task 18: Main `convert_workflow_template()` + referenced workflows
+### Task 18: Main `convert_workflow_template()` + referenced workflows ✅
 
 Implement the top-level conversion entry point.
 
@@ -363,9 +363,9 @@ assert len(wt.jobs[0].steps) == 2
 
 ---
 
-## Milestone 4: Test suite passes
+## Milestone 4: Test suite passes ✅
 
-### Task 19: Public API exports
+### Task 19: Public API exports ✅
 
 Wire up the public `__init__.py` so the library is usable.
 
@@ -378,7 +378,7 @@ Wire up the public `__init__.py` so the library is usable.
 
 ---
 
-### Task 20: Test harness for fixture files
+### Task 20: Test harness for fixture files ✅
 
 Build a pytest-based test runner that loads the 196 YAML test fixtures and compares output against expected JSON.
 
@@ -394,7 +394,7 @@ The test file format is: 3+ YAML documents separated by `---`, where doc[0] is t
 
 ---
 
-### Task 21: JSON serialization of workflow template
+### Task 21: JSON serialization of workflow template ✅
 
 Implement the serialization that converts a `WorkflowTemplate` into the exact JSON format the test fixtures expect. The format uses type codes (`type: 1` for sequence, `type: 2` for mapping, `type: 3` for expression) and specific field names.
 
@@ -404,7 +404,7 @@ Implement the serialization that converts a `WorkflowTemplate` into the exact JS
 
 ---
 
-### Task 22: Fix failures and pass the test suite
+### Task 22: Fix failures and pass the test suite ✅
 
 Iterate on the implementation to fix test failures discovered by the fixture test harness. Common issues will be:
 - JSON serialization format mismatches
@@ -416,9 +416,9 @@ Iterate on the implementation to fix test failures discovered by the fixture tes
 
 ---
 
-## Milestone 5: Action parsing
+## Milestone 5: Action parsing ⏳
 
-### Task 23: Action parser and action template
+### Task 23: Action parser and action template ⏳
 
 Implement the action manifest parser and converter.
 
@@ -454,7 +454,7 @@ assert result.context.errors.count == 0
 
 ---
 
-### Task 24: Update public API with action exports
+### Task 24: Update public API with action exports ⏳
 
 Add action-related exports to the public `__init__.py`.
 
