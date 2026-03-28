@@ -1,5 +1,18 @@
 """py-actions-workflow-parser — Python port of @actions/workflow-parser."""
 
+from .actions.action_parser import parse_action
+from .actions.action_template import (
+    ActionBranding,
+    ActionInputDefinition,
+    ActionOutputDefinition,
+    ActionRuns,
+    ActionRunsComposite,
+    ActionRunsDocker,
+    ActionRunsNode,
+    ActionTemplate,
+    ActionTemplateConverterOptions,
+    convert_action_template,
+)
 from .model.converter.convert import (
     convert_workflow_template,
     ErrorPolicy,
@@ -41,4 +54,15 @@ __all__ = [
     "is_sequence",
     "is_string",
     "parse_workflow",
+    "parse_action",
+    "convert_action_template",
+    "ActionTemplate",
+    "ActionInputDefinition",
+    "ActionOutputDefinition",
+    "ActionRuns",
+    "ActionRunsComposite",
+    "ActionRunsDocker",
+    "ActionRunsNode",
+    "ActionBranding",
+    "ActionTemplateConverterOptions",
 ]

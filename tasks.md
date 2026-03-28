@@ -416,9 +416,9 @@ Iterate on the implementation to fix test failures discovered by the fixture tes
 
 ---
 
-## Milestone 5: Action parsing ⏳
+## Milestone 5: Action parsing ✅
 
-### Task 23: Action parser and action template ⏳
+### Task 23: Action parser and action template ✅
 
 Implement the action manifest parser and converter.
 
@@ -454,7 +454,7 @@ assert result.context.errors.count == 0
 
 ---
 
-### Task 24: Update public API with action exports ⏳
+### Task 24: Update public API with action exports ✅
 
 Add action-related exports to the public `__init__.py`.
 
