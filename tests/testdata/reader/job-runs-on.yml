@@ -63,6 +63,7 @@ jobs:
       "type": "job",
       "id": "build",
       "name": "build",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -83,6 +84,7 @@ jobs:
       "type": "job",
       "id": "build2",
       "name": "build2",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -109,6 +111,7 @@ jobs:
       "type": "job",
       "id": "build3",
       "name": "build3",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -147,6 +150,7 @@ jobs:
       "type": "job",
       "id": "build4",
       "name": "build4",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -185,6 +189,7 @@ jobs:
       "type": "job",
       "id": "build5",
       "name": "build5",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -223,6 +228,7 @@ jobs:
       "type": "job",
       "id": "build6",
       "name": "build6",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -261,6 +267,7 @@ jobs:
       "type": "job",
       "id": "build7",
       "name": "build7",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -299,6 +306,7 @@ jobs:
       "type": "job",
       "id": "build8",
       "name": "build8",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

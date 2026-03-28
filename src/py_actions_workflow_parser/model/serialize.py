@@ -183,8 +183,8 @@ def _serialize_job(job: WorkflowJob) -> dict[str, Any]:
         if sv is not _OMIT:
             d["name"] = sv
 
-    # needs (only if non-empty list)
-    if job.needs:
+    # needs (always present — empty list when no dependencies)
+    if job.needs is not None:
         d["needs"] = [_serialize_token(n) for n in job.needs]
 
     # if (always present)

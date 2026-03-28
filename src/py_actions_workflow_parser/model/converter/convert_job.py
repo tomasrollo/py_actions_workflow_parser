@@ -217,7 +217,7 @@ def convert_job(
             type="job",
             id=job_key,
             name=_job_name(name, job_key),
-            needs=needs,
+            needs=needs or [],
             if_condition=if_condition or default_if,
             permissions=permissions,
             strategy=strategy,

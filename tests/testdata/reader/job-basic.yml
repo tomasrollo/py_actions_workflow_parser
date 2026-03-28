@@ -18,6 +18,7 @@ jobs:
       "type": "job",
       "id": "job1",
       "name": "job1",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -38,6 +39,7 @@ jobs:
       "type": "job",
       "id": "job2",
       "name": "job2",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

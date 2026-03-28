@@ -45,6 +45,7 @@ jobs:
       "type": "job",
       "id": "build",
       "name": "build",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success() && (github.repository == 'octo-org/octo-repo-prod')"

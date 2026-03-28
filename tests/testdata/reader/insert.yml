@@ -24,6 +24,7 @@ jobs:
       "type": "job",
       "id": "generate",
       "name": "generate",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

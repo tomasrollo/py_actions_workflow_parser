@@ -26,6 +26,7 @@ jobs:
       "type": "job",
       "id": "build",
       "name": "build",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

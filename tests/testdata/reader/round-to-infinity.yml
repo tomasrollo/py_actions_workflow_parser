@@ -54,6 +54,7 @@ jobs:
       "type": "job",
       "id": "positive-infinity-numeric",
       "name": "positive-infinity-numeric",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -75,6 +76,7 @@ jobs:
       "type": "job",
       "id": "negative-infinity-numeric",
       "name": "negative-infinity-numeric",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -96,6 +98,7 @@ jobs:
       "type": "job",
       "id": "positive-infinity-decimal",
       "name": "positive-infinity-decimal",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -117,6 +120,7 @@ jobs:
       "type": "job",
       "id": "NaN",
       "name": "NaN",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -141,6 +145,7 @@ jobs:
       "type": "job",
       "id": "integer-regular",
       "name": "integer-regular",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -162,6 +167,7 @@ jobs:
       "type": "job",
       "id": "positive-infinity-verbose-serialzation",
       "name": "positive-infinity-verbose-serialzation",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -188,6 +194,7 @@ jobs:
       "type": "job",
       "id": "negative-infinity-numeric-verbose-serialzation",
       "name": "negative-infinity-numeric-verbose-serialzation",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -214,6 +221,7 @@ jobs:
       "type": "job",
       "id": "integer-verbose-serialzation",
       "name": "integer-verbose-serialzation",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

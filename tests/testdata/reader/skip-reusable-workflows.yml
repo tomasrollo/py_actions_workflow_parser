@@ -40,6 +40,7 @@ jobs:
         "col": 3,
         "lit": "build"
       },
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

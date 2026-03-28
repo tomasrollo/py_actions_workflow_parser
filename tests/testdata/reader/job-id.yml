@@ -33,6 +33,7 @@ jobs:
       "type": "job",
       "id": "_myjob",
       "name": "_myjob",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -53,6 +54,7 @@ jobs:
       "type": "job",
       "id": "_my-job",
       "name": "_my-job",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -73,6 +75,7 @@ jobs:
       "type": "job",
       "id": "my-job",
       "name": "my-job",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -93,6 +96,7 @@ jobs:
       "type": "job",
       "id": "myjob-",
       "name": "myjob-",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -113,6 +117,7 @@ jobs:
       "type": "job",
       "id": "my-job0",
       "name": "my-job0",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -133,6 +138,7 @@ jobs:
       "type": "job",
       "id": "_my-job0",
       "name": "_my-job0",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

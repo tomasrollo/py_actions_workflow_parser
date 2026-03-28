@@ -21,6 +21,7 @@ jobs:
       "type": "job",
       "id": "build",
       "name": "build",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -50,6 +51,7 @@ jobs:
       "type": "job",
       "id": "max-double",
       "name": "max-double",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

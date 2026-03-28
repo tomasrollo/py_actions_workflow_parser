@@ -54,6 +54,7 @@ jobs:
         "type": 3,
         "expr": "github.actor"
       },
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -160,6 +161,7 @@ jobs:
       "type": "job",
       "id": "build2",
       "name": "Jobs Repro Hardcode",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

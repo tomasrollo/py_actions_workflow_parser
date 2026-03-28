@@ -37,6 +37,7 @@ jobs:
       "type": "job",
       "id": "build",
       "name": "build",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -135,6 +136,7 @@ jobs:
       "type": "job",
       "id": "build2",
       "name": "build2",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

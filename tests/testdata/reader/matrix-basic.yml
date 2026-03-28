@@ -39,6 +39,7 @@ jobs:
       "type": "job",
       "id": "matrix-basic",
       "name": "matrix-basic",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -96,6 +97,7 @@ jobs:
       "type": "job",
       "id": "matrix-nested-sequences",
       "name": "matrix-nested-sequences",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -169,6 +171,7 @@ jobs:
       "type": "job",
       "id": "matrix-with-infinity",
       "name": "matrix-with-infinity",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -225,6 +228,7 @@ jobs:
       "type": "job",
       "id": "nested-matrix",
       "name": "nested-matrix",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"

@@ -83,6 +83,7 @@ jobs:
       "type": "job",
       "id": "build",
       "name": "build",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success() && (true)"
@@ -103,6 +104,7 @@ jobs:
       "type": "job",
       "id": "build2",
       "name": "build2",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -123,6 +125,7 @@ jobs:
       "type": "job",
       "id": "build3",
       "name": "build3",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success() && (github.foo == 'bar')"
@@ -167,6 +170,7 @@ jobs:
       "type": "job",
       "id": "build5",
       "name": "build5",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success() && (github.foo == 'bar')"
@@ -187,6 +191,7 @@ jobs:
       "type": "job",
       "id": "build6",
       "name": "build6",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -207,6 +212,7 @@ jobs:
       "type": "job",
       "id": "build7",
       "name": "build7",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "false || (always() && true)"
@@ -227,6 +233,7 @@ jobs:
       "type": "job",
       "id": "build8",
       "name": "build8",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success() && (false || (true && true))"
@@ -247,6 +254,7 @@ jobs:
       "type": "job",
       "id": "build9",
       "name": "build9",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "false && success()"
@@ -267,6 +275,7 @@ jobs:
       "type": "job",
       "id": "build10",
       "name": "build10",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success() && (toJSON( github.actor))"
@@ -287,6 +296,7 @@ jobs:
       "type": "job",
       "id": "build11",
       "name": "build11",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "success()"
@@ -307,6 +317,7 @@ jobs:
       "type": "job",
       "id": "build12",
       "name": "build12",
+      "needs": [],
       "if": {
         "type": 3,
         "expr": "fromJson(toJSON(success()))"
