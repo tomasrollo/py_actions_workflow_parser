@@ -1,0 +1,27 @@
+[project]
+name = "py-actions-workflow-parser"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Tomas Rollo" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "py-actions-expressions-parser",
+]
+
+[project.scripts]
+py-actions-workflow-parser = "py_actions_workflow_parser:main"
+
+[build-system]
+requires = ["uv_build>=0.9.6,<0.10.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+]
+
+[tool.uv.sources]
+py-actions-expressions-parser = { git = "https://github.com/tomasrollo/py_actions_expressions_parser.git" }
