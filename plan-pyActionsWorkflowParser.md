@@ -4,7 +4,7 @@
 
 The TypeScript library (`@actions/workflow-parser` v0.3.49) is a **schema-driven YAML parser and validator** for GitHub Actions workflow files (`workflow.yml`) and action manifests (`action.yml`). It parses YAML into a validated token tree, then converts that tree into typed data models.
 
-**Estimated scope:** ~10,500 lines of TypeScript across ~79 source files → approximately 6,000–8,000 lines of Python (Python is typically more concise).
+**Estimated scope:** ~10,500 lines of TypeScript across ~79 source files → approximately 5,500–6,500 lines of Python (Python is typically more concise, and the expression parser is available as an existing library).
 
 ### Architecture Summary
 
@@ -51,7 +51,7 @@ TraceWriter                                          # Logging interface
 | TypeScript Dependency | Python Equivalent | Notes |
 |---|---|---|
 | `yaml` (v2.0+) | `ruamel.yaml` | Preserves source positions (line/col), round-trip parsing, YAML 1.1/1.2 support. PyYAML does **not** preserve positions well enough. |
-| `@actions/expressions` | **Custom implementation** | No Python equivalent exists. Must reimplement the expression lexer/parser (~500 LOC). See §3.6. |
+| `@actions/expressions` | `py-actions-expressions-parser` | Full Python port of the TS library. Provides `Lexer`, `Parser`, AST nodes, and `Evaluator`. Already added to the project. |
 | `cronstrue` | `croniter` or custom | For cron validation. `croniter` validates; `cronstrue` only describes. We need validation. |
 
 ### 2.3 Package Structure
@@ -91,12 +91,6 @@ src/py_actions_workflow_parser/
 │   ├── parse_event.py
 │   ├── template_validation_error.py
 │   └── trace_writer.py
-├── expressions/
-│   ├── __init__.py
-│   ├── lexer.py                    # Expression tokenizer
-│   ├── parser.py                   # Expression parser
-│   ├── ast_nodes.py                # Expr, FunctionCall, Binary, etc.
-│   └── function_info.py
 ├── workflows/
 │   ├── __init__.py
 │   ├── workflow_parser.py          # parseWorkflow entry point
@@ -208,34 +202,40 @@ The TS code is async only for `convertWorkflowTemplate` (fetching referenced wor
 
 **Estimated effort:** ~500 lines Python
 
-### Phase 3: Expression Language
+### Phase 3: Expression Language Integration
 
-**Goal:** Reimplement the `@actions/expressions` Lexer and Parser in Python.
+**Goal:** Integrate the existing `py-actions-expressions-parser` library.
 
-This is the **highest-risk component** — there is no existing Python library for GitHub Actions expressions. The expression language supports:
+The `py-actions-expressions-parser` package is a full Python port of the TypeScript `@actions/expressions` library, sharing the same test suite for cross-language correctness. It is already added to the project as a dependency.
 
-- **Literals:** strings (`'hello'`), numbers, booleans, null
-- **Context access:** `github.ref`, `env.MY_VAR`, `inputs['name']`
-- **Operators:** `==`, `!=`, `<`, `>`, `<=`, `>=`, `&&`, `||`, `!`
-- **Functions:** `contains()`, `startsWith()`, `endsWith()`, `format()`, `join()`, `toJSON()`, `fromJSON()`, `hashFiles()`, `success()`, `failure()`, `cancelled()`, `always()`
-- **Index access:** `matrix['os']`, `steps.build.outputs.result`
-- **Grouping:** parentheses
+**API mapping (TypeScript → Python):**
 
-**Approach:** Reimplement from scratch following the same Lexer → Parser pattern.
+| TypeScript (`@actions/expressions`) | Python (`py_actions_expressions_parser`) |
+|---|---|
+| `new Lexer(expr).lex()` | `Lexer(expr).lex()` |
+| `new Parser(tokens, namedContexts, functions).parse()` | `Parser(tokens, context_names, []).parse()` |
+| `FunctionInfo` | Pass dicts or `FunctionInfo`-compatible objects |
+| `ExpressionError` (parse/lex) | `ExpressionError` with `.pos.column` |
+| AST nodes: `FunctionCall`, `Binary`, etc. | Available in `py_actions_expressions_parser.ast` |
 
-**Modules:**
-1. `expressions/ast_nodes.py` — AST node types:
-   - `Expr` (base), `FunctionCall`, `Binary`, `Unary`, `Logical`, `Grouping`, `IndexAccess`, `ContextAccess`, `Literal`
-2. `expressions/lexer.py` — Tokenizer for expression strings
-3. `expressions/parser.py` — Recursive descent parser producing AST
-   - Accepts `named_contexts` and `functions` for validation
-4. `expressions/function_info.py` — `FunctionInfo` dataclass
+**Integration points in the workflow parser:**
+1. `expression_token.py` — `validate_expression()` calls `Lexer` + `Parser` to validate `${{ }}` contents
+2. `allowed_context.py` — parses `"functionName(min,max)"` strings into context names and function info, then passes them to the `Parser`
+3. `if_condition.py` — walks the parsed AST to detect status function calls (`success()`, `failure()`, `cancelled()`, `always()`)
 
-**Validation-only:** We only need to **parse and validate** expressions, not evaluate them. This significantly simplifies the implementation.
+**Usage example:**
+```python
+from py_actions_expressions_parser import Lexer, Parser, ExpressionError
 
-**Reference:** [github.com/actions/expressions](https://github.com/actions/expressions) — the TypeScript source is open. Study the Lexer/Parser for exact behavior.
+def validate_expression(expression: str, allowed_context: list[str]) -> None:
+    named_contexts, functions = split_allowed_context(allowed_context)
+    tokens = Lexer(expression).lex()
+    Parser(tokens, named_contexts, functions).parse()  # raises ExpressionError on invalid
+```
 
-**Estimated effort:** ~800 lines Python
+**No custom code needed** — this phase is purely about wiring the existing library into the template reader and converter modules.
+
+**Estimated effort:** ~50 lines Python (adapter/glue code only)
 
 ### Phase 4: Template Reader (Core Validator)
 
@@ -337,7 +337,6 @@ tests/
 ├── test_workflow_parser.py          # Main parse + convert integration tests
 ├── test_action_parser.py
 ├── test_yaml_object_reader.py
-├── test_expressions.py              # Expression lexer/parser unit tests
 ├── test_template_reader.py
 ├── test_file_reference.py
 └── testdata/                        # Symlink or copy from original_code
@@ -352,9 +351,9 @@ tests/
 
 | Risk | Impact | Mitigation |
 |---|---|---|
-| **Expression parser correctness** | High — wrong parsing breaks validation | Study TS source at github.com/actions/expressions; port its test suite too |
 | **YAML position tracking** | Medium — wrong line/col breaks error messages | Validate ruamel.yaml position output against TS yaml library early in Phase 2 |
 | **Schema edge cases** | Medium — 500+ definitions with subtle interactions | Rely heavily on the 196 test fixtures for regression |
+| **Expression library integration** | Low — API mismatch between TS and Python ports | `py-actions-expressions-parser` follows the same Lexer/Parser API; verify with its own test suite |
 | **Block scalar handling** | Low-Medium — YAML `\|`, `>`, `\|-` headers affect expression parsing | ruamel.yaml preserves these; test specifically |
 | **Circular alias detection** | Low — rare edge case | Port the alias resolution stack from TS |
 | **Reusable workflow depth** | Low — async file fetching complexity | Keep sync initially; depth=0 is default |
@@ -369,8 +368,8 @@ tests/
 - Validates against schema, returns token tree with errors
 
 ### Milestone 2: "Expression validation works" (Phase 3)
-- Expression lexer + parser
-- `${{ github.ref }}` parses and validates correctly
+- `py-actions-expressions-parser` integrated into template reader
+- `${{ github.ref }}` parses and validates correctly via the library
 - `${{ github.event = 12 }}` produces validation error
 
 ### Milestone 3: "Full conversion pipeline" (Phase 6)
@@ -396,14 +395,14 @@ tests/
 | Tokens | 600 |
 | Schema | 700 |
 | YAML Object Reader | 400 |
-| Expression Parser | 800 |
+| Expression Integration | 50 |
 | Template Reader | 1,200 |
 | Template Context + Errors | 300 |
 | Workflow/Action Parsers | 300 |
 | Model Dataclasses | 400 |
 | Converters | 1,800 |
 | Tests | 800 |
-| **Total** | **~7,300** |
+| **Total** | **~6,550** |
 
 ---
 
@@ -411,9 +410,10 @@ tests/
 
 ```toml
 dependencies = [
-    "ruamel.yaml>=0.18",     # YAML parsing with position tracking
-    "croniter>=1.3",          # Cron expression validation (optional)
+    "ruamel.yaml>=0.18",                          # YAML parsing with position tracking
+    "py-actions-expressions-parser",               # GitHub Actions expression lexer/parser/evaluator
+    "croniter>=1.3",                               # Cron expression validation (optional)
 ]
 ```
 
-No other external dependencies needed — the expression parser will be implemented in pure Python as part of this library.
+`py-actions-expressions-parser` provides the full expression language support (lexer, parser, AST, evaluator) — no custom expression handling code needed.
