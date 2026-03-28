@@ -42,14 +42,24 @@ class BasicExpressionToken(ExpressionToken):
     def clone(self, omit_source: bool = False) -> TemplateToken:
         if omit_source:
             return BasicExpressionToken(
-                None, None, self._expr, self.definition_info,
-                self.original_expressions, self.source,
-                self.expression_range, self.block_scalar_header,
+                None,
+                None,
+                self._expr,
+                self.definition_info,
+                self.original_expressions,
+                self.source,
+                self.expression_range,
+                self.block_scalar_header,
             )
         return BasicExpressionToken(
-            self.file, self.range, self._expr, self.definition_info,
-            self.original_expressions, self.source,
-            self.expression_range, self.block_scalar_header,
+            self.file,
+            self.range,
+            self._expr,
+            self.definition_info,
+            self.original_expressions,
+            self.source,
+            self.expression_range,
+            self.block_scalar_header,
         )
 
     def __str__(self) -> str:

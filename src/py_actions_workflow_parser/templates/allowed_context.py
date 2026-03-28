@@ -34,7 +34,9 @@ def split_allowed_context(
                 if max_raw == MAX_CONSTANT
                 else int(max_raw)
             )
-            functions.append(FunctionInfo(name=name, min_args=min_args, max_args=max_args))
+            functions.append(
+                FunctionInfo(name=name, min_args=min_args, max_args=max_args)
+            )
         else:
             named_contexts.append(item)
 

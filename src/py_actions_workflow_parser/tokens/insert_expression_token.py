@@ -4,7 +4,11 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from ..templates.template_constants import INSERT_DIRECTIVE, OPEN_EXPRESSION, CLOSE_EXPRESSION
+from ..templates.template_constants import (
+    INSERT_DIRECTIVE,
+    OPEN_EXPRESSION,
+    CLOSE_EXPRESSION,
+)
 from .expression_token import ExpressionToken
 from .scalar_token import ScalarToken
 from .template_token import TemplateToken
@@ -23,7 +27,9 @@ class InsertExpressionToken(ExpressionToken):
         range: TokenRange | None,
         definition_info: "DefinitionInfo | None",
     ) -> None:
-        super().__init__(TokenType.InsertExpression, file, range, INSERT_DIRECTIVE, definition_info)
+        super().__init__(
+            TokenType.InsertExpression, file, range, INSERT_DIRECTIVE, definition_info
+        )
 
     def clone(self, omit_source: bool = False) -> TemplateToken:
         if omit_source:

@@ -58,6 +58,7 @@ class MappingToken(TemplateToken):
 
     def clone(self, omit_source: bool = False) -> TemplateToken:
         from .scalar_token import ScalarToken as SC
+
         result = (
             MappingToken(None, None, self.definition_info)
             if omit_source

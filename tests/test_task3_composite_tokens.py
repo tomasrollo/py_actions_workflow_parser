@@ -7,13 +7,23 @@ from py_actions_workflow_parser.tokens.string_token import StringToken
 from py_actions_workflow_parser.tokens.number_token import NumberToken
 from py_actions_workflow_parser.tokens.sequence_token import SequenceToken
 from py_actions_workflow_parser.tokens.mapping_token import MappingToken
-from py_actions_workflow_parser.tokens.basic_expression_token import BasicExpressionToken
-from py_actions_workflow_parser.tokens.insert_expression_token import InsertExpressionToken
+from py_actions_workflow_parser.tokens.basic_expression_token import (
+    BasicExpressionToken,
+)
+from py_actions_workflow_parser.tokens.insert_expression_token import (
+    InsertExpressionToken,
+)
 from py_actions_workflow_parser.tokens.expression_token import ExpressionToken
 from py_actions_workflow_parser.tokens.types import TokenType
 from py_actions_workflow_parser.tokens.type_guards import (
-    is_string, is_number, is_boolean, is_sequence, is_mapping,
-    is_basic_expression, is_insert_expression, is_null,
+    is_string,
+    is_number,
+    is_boolean,
+    is_sequence,
+    is_mapping,
+    is_basic_expression,
+    is_insert_expression,
+    is_null,
 )
 
 
@@ -124,6 +134,7 @@ def test_type_guards():
 
 def test_traverse_sequence():
     from py_actions_workflow_parser.tokens.template_token import TemplateToken as TT
+
     seq = SequenceToken(None, None, None)
     s1 = StringToken(None, None, "a", None)
     s2 = StringToken(None, None, "b", None)
