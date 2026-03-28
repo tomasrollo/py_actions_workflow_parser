@@ -2,12 +2,13 @@
 
 from __future__ import annotations
 
-from typing import Union
+from pathlib import Path
+from typing import Optional, Union
 
 from ..templates.template_context import TemplateContext, TemplateValidationErrors
 from ..templates.template_parse_result import TemplateParseResult
 from ..templates.template_reader import read_template
-from ..templates.trace_writer import TraceWriter
+from ..templates.trace_writer import NoOperationTraceWriter, TraceWriter
 from ..workflows.file import File
 from ..workflows.yaml_object_reader import YamlObjectReader
 from .action_constants import ACTION_ROOT
@@ -15,10 +16,15 @@ from .action_schema import get_action_schema
 
 
 def parse_action(
-    entry_file: File,
-    context_or_trace: Union[TraceWriter, TemplateContext],
+    entry_file: Union[File, str],
+    context_or_trace: Optional[Union[TraceWriter, TemplateContext]] = None,
 ) -> TemplateParseResult:
     """Parse a GitHub Actions action.yml and return the template parse result."""
+    if isinstance(entry_file, str):
+        p = Path(entry_file)
+        entry_file = File(name=p.name, content=p.read_text(encoding="utf-8"))
+    if context_or_trace is None:
+        context_or_trace = NoOperationTraceWriter()
     if isinstance(context_or_trace, TemplateContext):
         context = context_or_trace
     else:
