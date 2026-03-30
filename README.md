@@ -323,6 +323,92 @@ class MyTraceWriter:
 result = parse_workflow(f, MyTraceWriter())
 ```
 
+## Export to JSON
+
+After converting to the typed data model, use `workflow_template_to_dict()` / `workflow_template_to_json()` (or the action equivalents) to produce a plain, human-readable representation. All token fields are resolved to their Python values: strings, booleans, numbers, and `${{ expression }}` strings.
+
+```python
+from py_actions_workflow_parser import (
+    parse_workflow,
+    convert_workflow_template,
+    workflow_template_to_dict,
+    workflow_template_to_json,
+    NoOperationTraceWriter,
+)
+from py_actions_workflow_parser.workflows.file import File
+
+f = File(name=".github/workflows/ci.yml", content=open(".github/workflows/ci.yml").read())
+result = parse_workflow(f, NoOperationTraceWriter())
+wt = convert_workflow_template(result.context, result.value)
+
+# Plain dict (include the "on:" trigger block by default)
+d = workflow_template_to_dict(wt)
+# => {
+#      "on": {"push": {}, "pull_request": {}},
+#      "jobs": [
+#        {
+#          "type": "job",
+#          "id": "build",
+#          "runs-on": "ubuntu-latest",
+#          "steps": [{"id": "", "uses": "actions/checkout@v4"}, ...]
+#        }
+#      ]
+#    }
+
+# JSON string with 2-space indentation
+print(workflow_template_to_json(wt))
+```
+
+For action files:
+
+```python
+from py_actions_workflow_parser import (
+    parse_action,
+    convert_action_template,
+    action_template_to_dict,
+    action_template_to_json,
+    NoOperationTraceWriter,
+)
+from py_actions_workflow_parser.workflows.file import File
+
+f = File(name="action.yml", content=open("action.yml").read())
+result = parse_action(f, NoOperationTraceWriter())
+at = convert_action_template(result.context, result.value)
+
+d = action_template_to_dict(at)
+print(action_template_to_json(at))
+```
+
+### Export API
+
+#### `workflow_template_to_dict(wt, include_events=True) -> dict`
+
+Converts a `WorkflowTemplate` to a plain `dict`. Pass `include_events=False` to omit the `on:` block.
+
+#### `workflow_template_to_json(wt, include_events=True) -> str`
+
+Serializes a `WorkflowTemplate` to a JSON string with 2-space indentation.
+
+#### `action_template_to_dict(at) -> dict`
+
+Converts an `ActionTemplate` to a plain `dict`.
+
+#### `action_template_to_json(at) -> str`
+
+Serializes an `ActionTemplate` to a JSON string with 2-space indentation.
+
+### Token representation in the export
+
+| Token type | Exported value |
+|---|---|
+| `StringToken("hello")` | `"hello"` |
+| `BooleanToken(true)` | `true` |
+| `NumberToken(42)` | `42` |
+| `NullToken` | `null` |
+| `BasicExpressionToken("matrix.os")` | `"${{ matrix.os }}"` |
+| `MappingToken` | `{"key": value, ...}` |
+| `SequenceToken` | `[value, ...]` |
+
 ## Error Handling
 
 Errors are accumulated during parsing without halting. Check `result.context.errors` after parsing:
