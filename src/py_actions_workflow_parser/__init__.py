@@ -18,6 +18,12 @@ from .model.converter.convert import (
     ErrorPolicy,
     WorkflowTemplateConverterOptions,
 )
+from .model.export import (
+    action_template_to_dict,
+    action_template_to_json,
+    workflow_template_to_dict,
+    workflow_template_to_json,
+)
 from .model.workflow_template import WorkflowTemplate
 from .templates.template_parse_result import TemplateParseResult
 from .templates.trace_writer import NoOperationTraceWriter, TraceWriter
@@ -40,6 +46,10 @@ __all__ = [
     "ErrorPolicy",
     "WorkflowTemplateConverterOptions",
     "WorkflowTemplate",
+    "workflow_template_to_dict",
+    "workflow_template_to_json",
+    "action_template_to_dict",
+    "action_template_to_json",
     "TemplateParseResult",
     "NoOperationTraceWriter",
     "TraceWriter",
